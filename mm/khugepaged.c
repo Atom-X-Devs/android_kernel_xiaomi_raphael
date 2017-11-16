@@ -1284,6 +1284,7 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
 			/* assume page table is clear */
 			_pmd = pmdp_collapse_flush(vma, addr, pmd);
 			spin_unlock(ptl);
+			mm_dec_nr_ptes(mm);
 			up_write(&vma->vm_mm->mmap_sem);
 			atomic_long_dec(&vma->vm_mm->nr_ptes);
 			pte_free(vma->vm_mm, pmd_pgtable(_pmd));
