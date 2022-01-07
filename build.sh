@@ -75,6 +75,9 @@ LINKER=ld.lld
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
 
+# Wheather you want to make defconfig. 1 is YES | 0 is NO
+INCREMENTAL=1
+
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
@@ -188,7 +191,7 @@ clone() {
 	fi
 
 	msg "|| Cloning Anykernel ||"
-#	git clone --depth 1 https://github.com/CanendShroud/AnyKernel3.git -b raphael-atomx $KERNEL_DIR/AnyKernel3
+#	git clone --depth 1 https://github.com/CannedShroud/AnyKernel3.git -b raphael-atomx $KERNEL_DIR/AnyKernel3
 	AK_DIR=$KERNEL_DIR/AnyKernel3
 }
 
@@ -325,23 +328,26 @@ build_kernel() {
 		MAKE+=( -s )
 	fi
 
+	if [ $MAKE_DEFCONF = "1" ]
 	msg "|| Make Defconfig ||"
-	make O=out -j"$PROCS" \
-		$DEFCONFIG \
-		CROSS_COMPILE=aarch64-linux-gnu- \
-		CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-		CC=clang \
-		PYTHON=python3 \
-		LLVM_IAS=1 \
-		LLVM=1 \
-		LD="$LINKER" \
-		LD_LIBRARY_PATH=$TC_DIR/lib
-
-	if [ $DEF_REG = 1 ]
 	then
-		cp .config arch/arm64/configs/$DEFCONFIG
-		git add arch/arm64/configs/$DEFCONFIG
-		git commit -m "$DEFCONFIG: Regenerate"
+		make O=out -j"$PROCS" \
+			$DEFCONFIG \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+			CC=clang \
+			PYTHON=python3 \
+			LLVM_IAS=1 \
+			LLVM=1 \
+			LD="$LINKER" \
+			LD_LIBRARY_PATH=$TC_DIR/lib
+
+		if [ $DEF_REG = 1 ]
+		then
+			cp .config arch/arm64/configs/$DEFCONFIG
+			git add arch/arm64/configs/$DEFCONFIG
+			git commit -m "$DEFCONFIG: Regenerate"
+		fi
 	fi
 
 	BUILD_START=$(date +"%s")
