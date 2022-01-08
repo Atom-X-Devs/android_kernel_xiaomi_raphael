@@ -111,6 +111,7 @@ static void gf_enable_irq(struct gf_dev *gf_dev)
 		enable_irq(gf_dev->irq);
 		gf_dev->irq_enabled = 1;
 	}
+	irq_set_affinity(gf_dev->irq, cpumask_of(7));
 }
 
 static void gf_disable_irq(struct gf_dev *gf_dev)
