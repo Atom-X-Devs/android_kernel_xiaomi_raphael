@@ -317,7 +317,7 @@ build_kernel() {
 <b>Linux Tag Version: </b><code>$LINUXVER</code>
 <b>Atom-X Build Progress: </b><a href='$SERVER_URL'> Check Here </a>
 <b>Compiler Info: </b><code>$KBUILD_COMPILER_STRING</code>
-#Atom-X #EAS  #$DEVICE"
+#Atom-X #$DEVICE"
 
 	tg_send_sticker "CAACAgQAAxkBAAIl2WDE8lfVkXDOvNEHqCStooREGW6rAAKZAAMWWwwz7gX6bxuxC-ofBA"
 
@@ -432,7 +432,7 @@ build_kernel() {
  			then
 				tg_post_msg "<b>❌Error! Compilaton failed: Kernel Image missing</b>
 <b>Build Date: </b><code>$DATE</code>
-<b>Kernel Name: </b><code>Atom-X-EAS-LTO-$DEVICE</code>
+<b>Kernel Name: </b><code>Atom-X-$DEVICE</code>
 <b>Linux Tag Version: </b><code>$LINUXVER</code>
 <b>Atom-X Build Failure Logs: </b><a href='$SERVER_URL'> Check Here </a>
 <b>Time Taken: </b><code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>
