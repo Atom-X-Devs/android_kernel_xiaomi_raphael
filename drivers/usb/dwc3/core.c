@@ -1519,18 +1519,16 @@ static int dwc3_remove(struct platform_device *pdev)
 
 	ipc_log_context_destroy(dwc->dwc_ipc_log_ctxt);
 	dwc->dwc_ipc_log_ctxt = NULL;
+	ipc_log_context_destroy(dwc->dwc_dma_ipc_log_ctxt);
+	dwc->dwc_dma_ipc_log_ctxt = NULL;
 	count--;
 	dwc3_instance[dwc->index] = NULL;
-
-	return 0;
-}
 
 #ifdef CONFIG_PM
 static int dwc3_suspend_common(struct dwc3 *dwc)
 {
 	unsigned long	flags;
 
-	switch (dwc->dr_mode) {
 	case USB_DR_MODE_PERIPHERAL:
 	case USB_DR_MODE_OTG:
 		spin_lock_irqsave(&dwc->lock, flags);
