@@ -43,35 +43,35 @@ enum tfa_error tfa_load_cnt(void *cnt, int length)
 	nxpTfaContainer_t  *cntbuf = (nxpTfaContainer_t  *)cnt;
 
 	if (length > TFA_MAX_CNT_LENGTH) {
-		pr_err("incorrect length\n");
+		pr_debug("incorrect length\n");
 		return tfa_error_container;
 	}
 
 	if (HDR(cntbuf->id[0],cntbuf->id[1]) == 0) {
-		pr_err("header is 0\n");
+		pr_debug("header is 0\n");
 		return tfa_error_container;
 	}
 
 	if ( (HDR(cntbuf->id[0],cntbuf->id[1])) != paramsHdr ) {
-		pr_err("wrong header type: 0x%02x 0x%02x\n", cntbuf->id[0],cntbuf->id[1]);
+		pr_debug("wrong header type: 0x%02x 0x%02x\n", cntbuf->id[0],cntbuf->id[1]);
 		return tfa_error_container;
 	}
 
 	if (cntbuf->size == 0) {
-		pr_err("data size is 0\n");
+		pr_debug("data size is 0\n");
 		return tfa_error_container;
 	}
 
 	/* check CRC */
 	if ( tfaContCrcCheckContainer(cntbuf)) {
-		pr_err("CRC error\n");
+		pr_debug("CRC error\n");
 		return tfa_error_container;
 	}
 
 	/* check sub version level */
 	if ((cntbuf->subversion[1] != NXPTFA_PM_SUBVERSION) &&
 							(cntbuf->subversion[0] != '0')) {
-		pr_err("container sub-version not supported: %c%c\n",
+		pr_debug("container sub-version not supported: %c%c\n",
 				cntbuf->subversion[0], cntbuf->subversion[1]);
 		return tfa_error_container;
 	}
@@ -229,13 +229,13 @@ nxpTfaFileDsc_t *tfacont_getfiledata(struct tfa_device *tfa, int prof_idx, enum 
 	unsigned int i;
 
 	if (tfa->cnt == NULL) {
-		pr_err("invalid pointer to container file\n");
+		pr_debug("invalid pointer to container file\n");
 		return NULL;
 	}
 
 	dev = tfaContGetDevList(tfa->cnt, tfa->dev_idx);
 	if (dev == NULL) {
-		pr_err("invalid pointer to container file device list\n");
+		pr_debug("invalid pointer to container file device list\n");
 		return NULL;
 	}
 
@@ -258,7 +258,7 @@ nxpTfaFileDsc_t *tfacont_getfiledata(struct tfa_device *tfa, int prof_idx, enum 
 	 */
 	prof = tfaContGetDevProfList(tfa->cnt, tfa->dev_idx, prof_idx);
 	if (prof == NULL) {
-		pr_err("invalid pointer to container file profile list\n");
+		pr_debug("invalid pointer to container file profile list\n");
 		return NULL;
 	}
 
@@ -307,7 +307,7 @@ static enum Tfa98xx_Error tfaContWriteVstep(struct tfa_device *tfa,  nxpTfaVolum
 		err = tfa_cont_write_filterbank(tfa, vp->vstep[vstep].filter);
 
 	} else {
-		pr_err("Incorrect volume given. The value vstep[%d] >= %d\n", vstep , vp->vsteps);
+		pr_debug("Incorrect volume given. The value vstep[%d] >= %d\n", vstep , vp->vsteps);
 		err = Tfa98xx_Error_Bad_Parameter;
 	}
 
@@ -731,7 +731,7 @@ enum Tfa98xx_Error tfaContWriteFile(struct tfa_device *tfa,  nxpTfaFileDsc_t *fi
 		/* Ignore */
 		break;
 	default:
-		pr_err("Header is of unknown type: 0x%x\n", type);
+		pr_debug("Header is of unknown type: 0x%x\n", type);
 		return Tfa98xx_Error_Bad_Parameter;
 	}
 
@@ -1404,7 +1404,7 @@ enum Tfa98xx_Error tfa_write_filters(struct tfa_device *tfa, int prof_idx)
 
 	if(i==0) {
 		if (tfa->verbose)
-			pr_err("Unable to write filters, CLKS=0 \n");
+			pr_debug("Unable to write filters, CLKS=0 \n");
 
 		return Tfa98xx_Error_StateTimedOut;	
 	}
@@ -1582,7 +1582,7 @@ enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int
 	int size = 0, ready, fs_previous_profile = 8; /* default fs is 48kHz*/
 
 	if ( !prof || !previous_prof ) {
-		pr_err("Error trying to get the (previous) swprofile \n");
+		pr_debug("Error trying to get the (previous) swprofile \n");
 		return Tfa98xx_Error_Bad_Parameter;
 	}
 
