@@ -558,6 +558,7 @@ static struct ctl_table kern_table[] = {
 		.proc_handler	= sched_proc_update_handler,
 		.extra1		= &min_sched_granularity_ns,
 		.extra2		= &max_sched_granularity_ns,
+	},
 	{
 		.procname	= "sched_prefer_spread",
 		.data		= &sysctl_sched_prefer_spread,
