@@ -61,7 +61,7 @@ void zpool_unmap_handle(struct zpool *pool, unsigned long handle);
 
 unsigned long zpool_compact(struct zpool *pool);
 
-unsigned long zpool_get_num_compacted(struct zpool *pool);
+atomic_long_t zpool_get_num_compacted(struct zpool *pool);
 
 u64 zpool_get_total_size(struct zpool *pool);
 
@@ -110,7 +110,7 @@ struct zpool_driver {
 	void (*unmap)(void *pool, unsigned long handle);
 
 	unsigned long (*compact)(void *pool);
-	unsigned long (*get_num_compacted)(void *pool);
+	atomic_long_t (*get_num_compacted)(void *pool);
 
 	u64 (*total_size)(void *pool);
 	size_t (*huge_class_size)(void *pool);

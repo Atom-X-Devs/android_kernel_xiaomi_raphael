@@ -449,7 +449,7 @@ static unsigned long zs_zpool_compact(void *pool)
 	return zs_compact(pool);
 }
 
-static unsigned long zs_zpool_get_compacted(void *pool)
+static atomic_long_t zs_zpool_get_compacted(void *pool)
 {
 	struct zs_pool_stats stats;
 

@@ -359,10 +359,11 @@ unsigned long zpool_compact(struct zpool *zpool)
  *
  * Returns: the total number of migrated pages for the pool
  */
-unsigned long zpool_get_num_compacted(struct zpool *zpool)
+atomic_long_t zpool_get_num_compacted(struct zpool *zpool)
 {
+	atomic_long_t zero = ATOMIC_LONG_INIT(0);
 	return zpool->driver->get_num_compacted ?
-		zpool->driver->get_num_compacted(zpool->pool) : 0;
+		zpool->driver->get_num_compacted(zpool->pool) : zero;
 }
 
 /**
